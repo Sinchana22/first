@@ -1,0 +1,443 @@
+declare
+a number:=20;
+b number:=10;
+c number;
+begin
+if(a>b) then
+dbms_output.put_line('the a greater:'||a);
+else
+dbms_output.put_line('the b greater:'||b);
+end if;
+end;
+
+--------------------------------------------------------------------------
+declare
+a number:=20;
+b number:=10;
+c number:=30;
+begin
+if(a>b and a>c) then
+dbms_output.put_line(' a greater:'||a);
+elsif(b>c and b>a) then
+dbms_output.put_line(' b greater:'||b);
+
+else
+dbms_output.put_line(' c greater:'||c);
+end if;
+end;
+
+--------------------------------------------------------------------------------
+declare
+a number;
+b number;
+c number;
+begin
+a:= :a;
+b:= :b;
+c:= :c;
+if(a>b and a>c) then
+dbms_output.put_line('a is greater:'||a);
+
+elsif(b>c and b>a) then
+dbms_output.put_line('b is greater:'||b);
+
+else
+dbms_output.put_line('c is greater:'||c);
+end if;
+end;
+
+----------------------------------------------------------------------------------------------------------------------------------------
+create table assessment(studentid int,marks char(20));
+insert into assessment values(101,50);
+SELECT STUDENTID,CASE WHEN MARKS < 50 THEN 'FAIL' ELSE Marks END FROM ASSESSMENT
+SELECT STUDENTID,marks,
+CASE 
+WHEN MARKS < 50 THEN 'FAIL' 
+WHEN MARKS > 50 THEN 'PASS'
+ELSE 
+Marks 
+END FROM ASSESSMENT
+-----------------------------------------------------------------------------------------------------------------------------------------
+Create,insert,update
+
+create table hydemploye(empid int,name varchar2(30),salary int);
+
+alter table hydemploye ADD primary key(empid);
+
+alter table hydemploye drop primary key;
+
+insert into hydemploye values(1,'David',6000);
+select * from hydemploye;
+--------------------------------------------------------------------
+BEGIN
+UPDATE hydEmploye SET Salary=5000 WHERE EmpId = 1;
+  
+UPDATE hydEmploye SET Name='Dravid', Salary = 45000 WHERE EmpId = 1;
+INSERT INTO hydEmploye VALUES(5, 'aveek', 2500);
+COMMIT;
+END;
+-----------------------------------------------------------------------------------------------------------------------------------------------
+FOR LOOP
+
+declare
+i number;
+begin
+for i in 1..10 loop
+dbms_output.put_line(i);
+end loop;
+end;
+-----------------------------------------------------------------------------------------
+DECLARE 
+a number;
+BEGIN
+FOR a in ascii('A') .. ascii('Z') LOOP //FOR a in 65..95 loop 
+dbms_output.put_line(chr(a));
+END LOOP; 
+END;
+------------------------------------------------------------------------------------------------
+
+declare
+i number;
+j number;
+k number:=5;
+begin
+for i in 1..5 loop   //excute 5 times
+for j in 1..5 loop   //excute 1 time
+dbms_output.put_line(k||' * ' ||j||'='||(k*j));
+end loop;
+end loop;
+end;
+--------------------------------------------------------------------------------------------
+create table circle(radius number,area number);
+
+pi constant number:=3.14;
+radius number;
+area number;
+begin
+for radius in 5..10 loop
+area:=pi*power(radius,2);
+insert into circle values(radius,2);
+end loop;
+end;
+
+select * from circle;
+-------------------------------------------------------------------------------------
+create table square(side number,pm number,area number);
+
+declare
+side number;
+area number;
+pm number;
+begin
+for side in 12..17 loop
+area:=side*side;
+pm:=4*side;
+insert into square values(side,pm,area);
+end loop;
+end;
+
+select * from square; 
+---------------------------------------------------------------------------------------------
+DECLARE  
+   grade char(1) : = : grade;  
+BEGIN 
+   CASE grade  
+      when 'A' then dbms_output.put_line('Excellent');  
+      when 'B' then dbms_output.put_line('Very good');  
+      when 'C' then dbms_output.put_line('Good');  
+      when 'D' then dbms_output.put_line('Average');  
+      when 'F' then dbms_output.put_line('Passed with Grace');  
+      else dbms_output.put_line('Failed');  
+   END CASE;  
+END;  
+----------------------------------------------------------------------------------------------
+Calculator
+
+DECLARE 
+a NUMBER;
+b NUMBER;
+arth_operation VARCHAR2(2);
+BEGIN
+a:=:a;
+b:=:b;
+arth_operation:=:arth_operation;
+dbms_output.put_line('Program started.' );
+CASE
+WHEN arth_operation = '+'
+THEN dbms_output.put_line('Addition of the numbers are: '||(a+b) );
+WHEN arth_operation = '-'
+THEN dbms_output.put_line('Subtraction of the numbers are: '|| (a-b));
+WHEN arth_operation = '*'
+THEN dbms_output.put_line('Multiplication of the numbers are: '|| (a*b) ); 
+WHEN arth_operation = '/'
+THEN dbms_output.put_line('Division of the numbers are: '|| (a/b) );
+ELSE 
+dbms_output.put_line('No operation action defined. Invalid operation'); 
+END CASE;
+dbms_output.put_line('Program completed.' );
+END;
+--------------------------------------------------------------------------------------
+create or replace function adds (i number,j number) return number is
+begin
+return i+j;
+end;
+--------------------------------------------
+select adds(4,5) from dual; //function call or
+---------------------------------------------
+//function call
+declare
+k number;   
+begin
+k:=adds(10,20);
+dbms_output.put_line('result:'||k);
+end;
+---------------------------------------------------------------------------------
+create or replace function area1 (r number) return number is
+pi constant number:=3.14;
+begin
+return pi*power(r,2);
+end;
+
+declare
+k number;
+begin
+k:=:k;
+k:=area1(k);
+dbms_output.put_line('result:'||k);
+end ; 
+-------------------------------------------------------------------------------------------
+create or replace function simpleint (p number,r number,t number) return number is
+area number;
+begin
+area:=(p*t*r)/100;
+return area;
+end;
+
+select simpleint(1000,10,4) from dual;
+---
+declare
+k number;
+p number;
+t number;
+r number;
+begin
+t:=:t;
+p:=:p;
+r:=:r;
+k:=simpleint(p,t,r);
+dbms_output.put_line('result:'||k);
+end;
+-------------------------------------------------------------------------------------
+PROCEDURE
+
+create table mphasisemp18(empno number,name varchar2(30),job varchar2(30));
+insert into mphasisemp18 values(102,'sinch','dev');
+select * from mphasisemp18;
+----------
+create or replace procedure del_manager is
+begin 
+delete from mphasisemp18 where job='manager';
+commit;
+end del_manager;
+-----------
+begin
+del_manager;
+end;
+------------------------------------------------------------------------------------------------
+MULTIPLE INSERT
+ 
+create table users(empid number,empname char(20),empage int,salary int,empaddress char(20))
+----------        
+create or replace procedure insert_employee   
+(empid IN NUMBER,empname IN VARCHAR2,empage IN NUMBER,salary IN NUMBER,empaddress IN VARCHAR2)    
+is    
+begin    
+insert into users values(empid,empname,empage,salary,empaddress);    
+end; 
+-------                     
+BEGIN    
+   insert_employee(101,'Rahul',23,45000,'bangalore');  
+ insert_employee(102,'kiran',23,45000,'bangalore');  
+ insert_employee(103,'Manasa',23,45000,'bangalore');  
+  END;  
+-----------------------------------------------------------------------------------------------
+MULTIPLE DELETE
+
+create table users(empid number,empname char(20),empage int,salary int,empaddress char(20))
+----------        
+create or replace procedure insert_employee   
+(empid IN NUMBER,empname IN VARCHAR2,empage IN NUMBER,salary IN NUMBER,empaddress IN VARCHAR2)    
+is    
+begin    
+insert into users values(empid,empname,empage,salary,empaddress);    
+end; 
+-------                     
+BEGIN    
+   insert_employee(101,'Rahul',23,45000,'bangalore');  
+ insert_employee(102,'kiran',23,45000,'bangalore');  
+ insert_employee(103,'Manasa',23,45000,'bangalore');  
+  END;
+-------  
+create or replace procedure delete1   
+(empid IN NUMBER,empname IN VARCHAR2,empage IN NUMBER,salary IN NUMBER,empaddress IN VARCHAR2)    
+is    
+begin    
+delete from users where empid=101 and empid=102;   
+end;
+
+BEGIN 
+delete from users where empid=101;
+delete from users where empid=103;
+end;
+
+select * from users;
+
+OR
+create or replace procedure delete_employee(empid1 IN NUMBER) is   
+ begin    
+delete from users where empid=empid1;    
+end;
+
+BEGIN    
+delete_employee(101);
+delete_employee(102);  
+END; 
+-------------------------------------------------------------------------------------------------
+CURSOR
+------------------------------------------
+cursors:- cursors are used whenever one want to retrieve more than one record from the database.cursor is the amount of memory reserved to accomodate more than one row of the table.
+cursor are divide into two types:-
+1)implicit cursor
+2)explicit cursor
+
+implicit cursor:- oracle implicitly creates and open a cursor for every sql data manipulation statement that is not part of an explicit declared cursor.programmer has no control over this.
+
+explicit cursor:-pl/sql programmer use explicit cursor only.the result of this cursor select statement can consist of more than one rows depending on query.
+
+activeset:- it is a group of rows which are hold in the memory area of the cursor.
+
+steps:-
+1)declare (memory allocation)
+2)open (activeset is created)
+3)manipulation(loop/rows)
+4)close(release the memory)
+
+example:-
+declare
+cursor c is select ename from emp;
+n varchar2(15);
+begin
+open c;
+fetch c into n;
+dbms_output.put_line(n);
+end;
+
+
+cursor attributes:-
+-------------------------
+1)%isopen :-when there is no activeset it will retrieve false and if is there activeset is true.return type is boolean.
+
+2)%found:-to know whether the cursor pointer points to a valid row inside the cursor.we cannot fetch when no more rows available.return type is boolean.
+
+3)%notfound:-(same) 
+
+4)%rowcount:-it will retrieve the position of the pointer within the activeset .
+
+example:-
+DECLARE   
+   total_rows number(2);  
+BEGIN  
+   UPDATE  employee  
+   SET salary = salary + 5000;  
+   IF sql%notfound THEN  
+      dbms_output.put_line('no customers updated');  
+   ELSIF sql%found THEN  
+      total_rows := sql%rowcount;  
+      dbms_output.put_line( total_rows || ' customers updated ');  
+   END IF;   
+END;  
+---------------------------------------------------------------------------
+
+example:-
+
+declare
+cursor c is select ename from emp ;
+x varchar2(15);
+begin
+open c;
+loop
+fetch c into x;
+exit when c %notfound; 
+dbms_output.put_line(c %rowcount||'   '||x);
+end loop;
+end;
+-------------------------------------------------------------------------------------
+
+
+create table CUSTOMERS(ID number,NAME varchar2(30),AGE number,ADDRESS varchar2(30),SALARY number)
+----------------
+insert into customers values(102,'kiran',32,'bangalore',4500);
+-------------------
+DECLARE  
+   c_id customers.id%type;  
+   c_name customers.name%type;  
+   c_addr customers.address%type;  
+   CURSOR c_customers is  
+      SELECT id, name, address FROM customers;  
+BEGIN  
+   OPEN c_customers;  
+   LOOP  
+      FETCH c_customers into c_id, c_name, c_addr;  
+      EXIT WHEN c_customers%notfound;  
+      dbms_output.put_line(c_id || ' ' || c_name || ' ' || c_addr);  
+   END LOOP;  
+   CLOSE c_customers;  
+END; 
+----------------------------------------------------------------------------------------------------
+
+declare
+cursor c is select salary,name from mphasis89;
+n varchar2(20);
+x varchar2(20);
+begin
+open c;
+loop
+fetch c into n,x;
+exit when c %notfound;
+dbms_output.put_line(c %rowcount ||'  '||n ||'  '||x);
+
+end loop;
+end;
+--------------------------------------------------------------------------------------------
+EXCEPTION
+-----------------
+DECLARE
+n number;
+BEGIN
+n:=10/0;
+dbms_output.put_line(n);
+EXCEPTION
+WHEN ZERO_DIVIDE THEN
+dbms_output.put_line('Zero Divide Error');
+END;
+-----------------------------------------------------------------------------------------------
+DECLARE
+eno number:=107;
+ename varchar(30);
+BEGIN
+select name into ename from mphasis89 where empno=eno;
+dbms_output.put_line('Empname = ' || ename);
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+dbms_output.put_line('Employee does not exist');
+END;
+------------------------------------------------------------------------------------------------
+BEGIN
+insert into mphasis87(empno,name,salary,phone)values(1002,'anil',4546,5676876876);
+dbms_output.put_line('1 row created');
+EXCEPTION
+WHEN DUP_VAL_ON_INDEX THEN
+dbms_output.put_line('Primary key attribute does not contain duplicate values');
+END;
+
+------------------------------------------------------------------------------------------
